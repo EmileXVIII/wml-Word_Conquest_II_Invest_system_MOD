@@ -11,7 +11,7 @@ function wesnoth.effects.training_bonus(u, cfg)
 end
 
 
-function wc2_invest_process_training_advances(u)
+function wesnoth.effects.wc2_process_training_advancements(u, cfg)
     local counter=u.variables["wc2.invest_mod.training_bonus.amount"] or 0
     local applied_advances =  u.variables["wc2.invest_mod.training_bonus_applied"] or 0
     counter = counter - applied_advances
@@ -25,12 +25,10 @@ function wc2_invest_process_training_advances(u)
     end
 end
 
-function wesnoth.wml_actions.wc2_process_training_advancements(cfg)
-    local leaders = wesnoth.units.find_on_map{ canrecruit = true }
-    for i=1,#leaders-1,1
-    do
-        u=leaders[i]
-        wc2_invest_process_training_advances(u)
-    end
+function wesnoth.effects.wc2_modify_unit_var(u, cfg)
+    new_cfg = helper.parsed(helper.get_child(cfg, "var"))
+    local var_name = new_cfg.name
+    local var_value = new_cfg.value
+    u.variables[var_name] = var_value
 end
 -->>
