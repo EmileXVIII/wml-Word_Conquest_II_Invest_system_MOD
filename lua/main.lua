@@ -1,1 +1,0 @@
-wc2_invest_training_bonus = wesnoth.dofile("./training_bonus.lua")
