@@ -7,11 +7,6 @@ local artifacts = {}
 artifacts.list = {}
 
 function artifacts.init_data(cfg)
-	
-	wesnoth.wml_actions.message {
-		speaker = "narrator",
-		message = "init artefacts",
-	}
 	cfg = helper.literal(cfg)
 	for artifact in wml.child_range(cfg, "artifact") do
 		table.insert(artifacts.list, artifact)
@@ -105,6 +100,7 @@ end
 function wesnoth.wml_actions.wc2_invest_drop_pickup(cfg)
 	local item = wc2_dropping.current_item
 	local unit = wesnoth.get_unit(cfg.id)
+	
 	if not item.wc2_atrifact_id then 
 		return
 	end
@@ -114,7 +110,7 @@ function wesnoth.wml_actions.wc2_invest_drop_pickup(cfg)
 	end
 
 	local side_num = unit.side
-	local is_human = cfg.is_human
+	local is_human = cfg.human
 	if not wml.variables["wc2_config_experimental_pickup"] and not is_human  then
 		return
 	end
@@ -141,8 +137,9 @@ function wesnoth.wml_actions.wc2_invest_drop_pickup(cfg)
 
 	wc2_dropping.item_taken = true
 	artifacts.give_item(unit, index, true)
+	unit.variables["wc2.has_artefact"] =  true
 	wesnoth.allow_undo(false)
-end)
+end
 
 function artifacts.fresh_artifacts_list(for_type)
 	local res = {} 
